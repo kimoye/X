@@ -6,7 +6,15 @@ STM32|Python|C|Assembly|Computer
 
 
 * Computer
+  * None
+  
 * Assembly
+  * None
+  
 * C
+  * None
 * Python
+  * None
+  
 * STM32
+  * None
