@@ -1,7 +1,11 @@
-//data type
+//************************data-tpye**********************
+// 							define kinds of data
+//
+//
+//*******************************************************
 typedef char u8;
 typedef unsigned short u16;
-typedef int int32;
+typedef unsigned int u32;
 typedef long long32;
 
 
