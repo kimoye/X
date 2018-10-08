@@ -19,4 +19,4 @@ STM32|Python|C|Assembly|Computer
 * STM32
   * SPI底层驱动(无任何官方库，只包括启动代码)
   * SD卡驱动/文件系统(使用SPI连接硬件，淘宝SD卡转TTL模块)
-  * TCP/IP协议学习与构建(使用SPI协议连接硬件，淘宝ENC28)
+  * TCP/IP协议学习与构建(使用SPI协议连接硬件，淘宝ENC28J60：RJ45转TTL，不集成TCP/协议以便学习)
