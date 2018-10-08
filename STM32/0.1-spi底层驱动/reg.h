@@ -1,9 +1,12 @@
+#ifndef _REG_H
+#define	_REG_H
+#endif
 //************************data-tpye**********************
 // 							define kinds of data
 //
 //
 //*******************************************************
-typedef char u8;
+typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 typedef long long32;
@@ -65,4 +68,16 @@ typedef struct{
 }GPIO;
 
 #define GPIOA ((GPIO *)(0X50000000))
+
+
+
+void
+Spi1_Init(void);
+
+void
+Spi1_SetSpeed(u8 Speed);
+
+u8
+Spi_ReadWriteByte(u8 Data);
+
 

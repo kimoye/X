@@ -2,7 +2,8 @@
 
 
 /*---------------the spi init function----------------------*/
-void Spi1_Init(void){
+void
+Spi1_Init(void){
 	
 	RCC_IOPAENR |= 1<<0;							/*enable rcc&spi clock	*/
 	RCC_APB2ENR |= 1<<12;						 	/*enable rcc&spi clock	*/
@@ -53,14 +54,16 @@ void Spi1_Init(void){
 
 
 /*------the function for the user: set the spi speed------*/
-void Spi1_SetSpeed(u8 Speed){
+void
+Spi1_SetSpeed(u8 Speed){
 	Speed &= 0x7;
 	SPI_REG->SPI_CR1 &= 0xFFC7;
 	SPI_REG->SPI_CR1 |= Speed<<3;
 	SPI_REG->SPI_CR1 |= 1<<6;
 }
 
-u8 Spi_ReadWriteByte(u8 Data){
+u8
+Spi_ReadWriteByte(u8 Data){
 	u16 retrytimes = 0;
 	while((SPI_REG->SPI_SR&1<<1)==0){
 		retrytimes++;
