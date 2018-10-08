@@ -37,8 +37,12 @@ Sd_Enable(void);
 u8 
 Sd_Disable(void);
 
+
 /********发送命令失败会返回0xFF，可以利用这个判断发送成功与否
 *********发送成功则返回响应码*****************************/
 u8
 Sd_SendCmd(u8 cmd, u32 arg, u8 crc);
+
+u8
+SD_SendCommand_NoDeassert(u8 cmd, u32 arg,u8 crc);
 

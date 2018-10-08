@@ -2,7 +2,7 @@
 #define	_REG_H
 #endif
 /**********************Data-tpye************************
- 						define kinds of data	
+ 			define kinds of data	
 						
 ********************************************************/
 typedef unsigned char u8;
@@ -15,7 +15,7 @@ typedef long long32;
 
 
 /************************SPI part***********************
-			spi maps in 0X4000 3800 -- 0X4000 3BFF , (1K)
+		spi maps in 0X4000 3800 -- 0X4000 3BFF , (1K)
 
 *******************************************************/
 
@@ -33,9 +33,9 @@ typedef struct{
 
 #define SPI_REG ((SPI_REG*)(0X40003800))
 
-/***********************RCC part*************************
-				we must enable the rcc before  we enable the spi
-				RCC address:0X4002 1000 -- 0X4002 13FF (1K)
+/***********************RCC part****************************
+		we must enable the rcc before  we enable the spi
+		RCC address:0X4002 1000 -- 0X4002 13FF (1K)
 ***********************************************************/
 
 #define RCC_APB2ENR (*((long *)(0X40021000+0X34)))
@@ -45,8 +45,8 @@ typedef struct{
 
 
 /**********************GPIO part*************************
-				we use PA5 6 7 as spi port,
-				GPIOA	dress: 0X5000 0000 -- 0X5000 03FF, (1K)
+		we use PA5 6 7 as spi port,
+		GPIOA	dress: 0X5000 0000 -- 0X5000 03FF, (1K)
 *********************************************************/
 
 typedef struct{

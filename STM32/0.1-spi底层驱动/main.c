@@ -1,4 +1,5 @@
+#include "reg.h"
+int main(){
 
-#include "spi.c"
-
+}
 

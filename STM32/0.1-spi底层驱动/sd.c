@@ -1,6 +1,6 @@
 #include "sd.h"
 
-/********************SD  init*********************
+/********************SD  init***********************
 	use Sd_init func when we connect to sdcard	 	
 
 ***************************************************/
@@ -10,39 +10,42 @@ Sd_init(void){
 	u16 i, retrytimes;
 	
 	
-	Spi_Init();											/* 	spi init				*/
+	Spi_Init();																/* 	spi init		*/
 	
-	Spi_SetSpeed(SPI_SPEED_LOW);						/*	low speed				*/
+	Spi_SetSpeed(SPI_SPEED_LOW);											/*	low speed		*/
 
-	for(i=0;i<0xf00;i++);								/*	delay	sometime	*/
+	for(i=0;i<0xf00;i++);													/*	delay	sometime*/
 	for(i=0;i<10;i++){
 		
-		Spi_ReadWriteByte(0xff);						/*	74 premas				*/
+		Spi_ReadWriteByte(0xff);											/*	80 premas(clks)	*/
 	
 	}
 	
-	retrytimes = 20;									/* reset SdCard			*/
-	do{																					/*and pickup spimode*/
+	retrytimes = 20;														/* reset SdCard		*/
+	do{																		/*and pickup spimode*/
 		rdata =	Sd_SendCmd(CMD0, 0, 0x95);
 	}while((rdata!=0X01) && retrytimes--);
-
+	if(retrytimes == 0)return 1;
+	
+	//get sd_infomation
+	
 }
 
 
 
 u8 
 Sd_Enable(void){
-	u32 retrytimes = 0;
-	GPIOA->PPR &= 0xFFFFFCFF;							/*pull-down gpioA p4*/
-	GPIOA->PPR |= 0x10<<8;								/*configure	PUPDR	*/
+	u8 retrytimes = 0;
+	GPIOA->PPR &= 0xFFFFFCFF;											/*pull-down gpioA p4*/
+	GPIOA->PPR |= 0x10<<8;												/*configure	PUPDR	*/
 	do{
 		if(Spi_ReadWriteByte(0xFF)==0xFF)return 0;
 		retrytimes ++;
-	}while(retrytimes<0xFFFFFF);
+	}while(retrytimes<0xFF);
 	
-	GPIOA->PPR &= 0xFFFFFCFF;							/*pull-up GPIOA p4*/
-	GPIOA->PPR |= 0x01<<8;								/* this means fail*/											
-	return 1;																			/* wait fail			*/
+	GPIOA->PPR &= 0xFFFFFCFF;											/*	pull-up gpioA p4*/
+	GPIOA->PPR |= 0x01<<8;												/* 	this means fail	*/											
+	return 1;															/* 	wait fail		*/
 }
 
 
@@ -51,24 +54,22 @@ Sd_Enable(void){
 u8 
 Sd_Disable(void){
 	
-	GPIOA->PPR &= 0xFFFFFCFF;							/*pull-up gpioA p4*/
-	GPIOA->PPR |= 0x01<<8;								/* just cs disable*/											
-	return 0;																			/* 	spi's cs line	*/
+	GPIOA->PPR &= 0xFFFFFCFF;											/*	pull-up gpioA p4	*/
+	GPIOA->PPR |= 0x01<<8;												/* just cs disable		*/											
+	return 0;															/* 	spi's cs line		*/
 }
 
-/***********************    Sd_SendCmd    **************************
-* 函数名称   : SD_SendCmd
-* 功能描述   : 向sd卡写入一个数据包的内容 512字节
-* 进入参数   : cmd：命令  arg：命令参数  crc：crc校验值及停止位
-* 返回参数   : 返回值:SD卡返回的对应相应命令的响应
-* 备注说明   : 响应为R1-R7，见SD协议手册V2.0版（2006)
+/*********************** Sd_SendCmd series functions ****************
+
+
+
 ********************************************************************/
 u8
 Sd_SendCmd(u8 cmd, u32 arg, u8 crc){
 	u8 rdata;
 	u8 retrytimes;
 	Sd_Disable();
-	if(Sd_Enable())return 0xFF;							/* enable cs again */
+	if(Sd_Enable())return 0xFF;									/* enable cs again	 */
 	
 	//send cmd, according SD protocol, a cmd contain 6 bytes 
 	//more detail ,see the books
@@ -90,7 +91,31 @@ Sd_SendCmd(u8 cmd, u32 arg, u8 crc){
 		rdata = Spi_ReadWriteByte(0xFF);
 	}while((rdata&0x80)&&retrytimes--);
 	
-	return rdata;																	/* return status code*/
+	return rdata;											/* return status code	*/
 }
 
+u8
+SD_SendCommand_NoDeassert(u8 cmd, u32 arg,u8 crc)
+{
+	u8 rdata;
+	u8 retrytimes = 0;
+	Sd_Disable();do{
+	if(Spi_ReadWriteByte(0xFF)==0xFF)return 0;
+		retrytimes ++;
+	}while(retrytimes<0xFF);
+	Spi_ReadWriteByte(cmd|0x401);
+	Spi_ReadWriteByte(arg>>24);
+	Spi_ReadWriteByte(arg>>16);
+	Spi_ReadWriteByte(arg>>8);
+	Spi_ReadWriteByte(arg);
+	Spi_ReadWriteByte(crc);
+	
+	//get respons
+	retrytimes = 0;
+	while((rdata=Spi_ReadWriteByte(0xFF))==0xFF){
+		retrytimes ++;
+		if(retrytimes>0xFE)break;
+	}
+	return rdata;
+}
 
