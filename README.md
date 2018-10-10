@@ -6,15 +6,17 @@ STM32|Python|C|Assembly|Computer
 
 
 * Computer
-  * None
+  * 数电->74IC掌握->理论单片机->供电/阻容学习->实际单片机
   
 * Assembly
-  * None
+  * 51汇编->8086汇编->STM32->汇编->编译器常用内嵌汇编
   
 * C
-  * None
+  * 硬件知识(内存模型/IO模型/中断模型等)->基本语法->进阶语法操作(OBJ模拟/内嵌汇编等)->算法/数据结构
 * Python
-  * None
+  * 只用于搭建个人博客和算法学习
   
 * STM32
-  * None
+  * SPI底层驱动(无任何官方库，只包括启动代码)
+  * SD卡驱动/文件系统(使用SPI连接硬件，淘宝SD卡转TTL模块)
+  * TCP/IP协议学习与构建(使用SPI协议连接硬件，淘宝ENC28J60：RJ45转TTL，不集成TCP/协议以便学习)
