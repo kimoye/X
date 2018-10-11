@@ -33,7 +33,7 @@ class solution(object):
                 res = i + 1
                 if bigger1 < bigger2:
                     bigger1 = bigger2
-                bigger2 = A[0]
+                bigger2 = bigger1
             elif A[i] > bigger2:
                 bigger2 = A[i]
         return res
