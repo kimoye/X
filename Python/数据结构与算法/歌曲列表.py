@@ -11,26 +11,19 @@ class Solution(object):
 #   每首歌至少播放一次。
 #   一首歌只有在其他 K 首歌播放完之后才能再次播放。
 #   返回可以满足要求的播放列表的数量。     
-#   N < L
-#   此处不适用reduce 直接构造连乘函数即可
-    # 考虑边界条件：L=N 即想听的歌刚刚好等于歌单得数目
-    # 此时，返回N得全排就好
-    # K < N: K + 1 = N也是全排
-    if L == N and  N == K + 1:
-        res = 1
-        for i in range(1,N+1):
-            res = res * i
-        return res
-   
-    # 首先将所有得歌全排，因为都得播放一次，即A（N/N）得res1
-    # 然后剩下从已经播放过的N首里面全排后选出L-N首歌，得res2
-    # 选出res2要在第K个位置之后的其中L-N个位置中，得res3
-    # 返回res1*res2*res3
-    res1 = res2 = 1
-    for i in range(1,N+1):
-        res1 = res1 * i
-    for i in range(L-N,N+1):
-        res2 = res2 * i
-    for i in range
+#   N =< L
+        #经过学习，掌握了DP的核心思想之后，该题目也较容易找出状态转移方程为：
+        #       f(n,l,k)=f(n-1,l-1,k)*n+f(n,l-1,k)*(n-k)
+        #       接下来考虑边界条件和怎么用py实现这个转移方程即可
 
-    return res1*res2
+        #创建一个二维数组
+        memo = [[0]*(L+1) for _ in range(N+1)]
+        #状态方程
+        for i in range(1,N+1):
+            for j in range(i,L+1):
+                if i == j or i == K+1:
+                    memo[i][j] = math.factorial(i)
+                else:
+                    memo[i][j] = i*memo[i-1][j-1] + (i-K)*memo[i][j-1]
+        
+        return memo[-1][-1]%(10**9 + 7) 
